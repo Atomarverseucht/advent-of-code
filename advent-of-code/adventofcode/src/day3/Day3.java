@@ -5,58 +5,107 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+
 public class Day3 {
-    static int[] array1 = new int[1000];
-    static int[] array2 = new int[1000];
-    static int result = 0;
+    static boolean allowedMul = true; // Steuert, ob Multiplikationen ausgeführt werden
+    static int result = 0;           // Ergebnis der gültigen Multiplikationen
+
     public static void main(String[] args) throws Exception {
-        //Daten Einlesen aus txt
         System.out.println("Dec. 3rd!");
+
+        // Daten aus Datei einlesen
         String fileName = "C:/Users/tombo/private-Projekte/advent-of-code/advent-of-code/adventofcode/src/day3/input.txt";
         Path path = Paths.get(fileName);
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
+
+        ex2(allLines);
+        System.out.println("Ergebnis: " + result);
+    }
+
+    public static void ex2(List<String> allLines) {
         for (String string : allLines) {
-            int index = 0;
             char[] charInput = string.toCharArray();
-            for (int i=0; i < charInput.length; i++) {
-                char charIn = charInput[i];
-               if((charIn == 'm' && index == 0)||(charIn == 'u' && index == 1)||(charIn == 'l' && index == 2)||(charIn == '(' && index == 3)) {
-                index++;
-               } else if(Character.isDigit(charIn) && index == 4){ // Command sieht so aus: mul(X................. X ist eine Nummer
-                index = 0;
-                int[] nums = getNumbers(i,charInput);
-                if(nums[2] != -1){
-                    int x = nums[0];
-                    int y = nums[1];
-                    i = nums[2];
-                    result += x * y;
-                } else{ index = 0;}
-               } else{ index = 0;}
+            for (int i = 0; i < charInput.length; i++) {
+                int res = newIndex(i, charInput, "do()");
+                if (res != -1) {
+                    allowedMul = true;
+                    i += res;
+                }
+
+                res = newIndex(i, charInput, "don't()");
+                if (res != -1) {
+                    allowedMul = false;
+                    i += res;
+                }
+
+                if (allowedMul) {
+                    res = newIndex(i, charInput, "mul(");
+                    if (res != -1) {
+                        i += res + 1; // Springe zum Start der Zahlen nach "mul("
+                        res = mulCommand(i, charInput);
+                        if (res != -1) {
+                            i = res; // Aktualisiere Index, um hinter der aktuellen Multiplikation fortzufahren
+                        }
+                    }
+                }
             }
         }
-        System.out.println(result);
     }
-    public static int[] getNumbers(int i, char[] chars){
-        String res = String.valueOf(chars[i]);
+
+    public static int newIndex(int i, char[] chars, String keyword) {
+        char[] keyChars = keyword.toCharArray();
+        int index = 0;
+
+        // Prüfe, ob das Keyword vollständig in die Zeichenkette passt
+        for (char c : keyChars) {
+            if (i + index >= chars.length || c != chars[i + index]) {
+                return -1; // Ungültig, wenn ein Zeichen nicht übereinstimmt
+            }
+            index++;
+        }
+        return index - 1; // Letzter Index des Keywords
+    }
+
+    public static int mulCommand(int i, char[] charInput) {
+        int res = -1;
+
+        if (Character.isDigit(charInput[i])) {
+            int[] nums = getNumbers(i, charInput);
+            if (nums[2] != -1) {
+                int x = nums[0];
+                int y = nums[1];
+                res = nums[2];
+                result += x * y; // Addiere das Produkt der Zahlen zum Ergebnis
+            }
+        }
+        return res;
+    }
+
+    public static int[] getNumbers(int i, char[] chars) {
+        StringBuilder res = new StringBuilder();
         int[] out = new int[3];
         boolean commaAllowed = true;
         boolean hasValue = false;
-        for (int j = 1; j < 7; j++) {
-            char sign = chars[i+j];
-            if(Character.isDigit(sign)){
-                res += sign;
+
+        for (int j = 0; i + j < chars.length; j++) {
+            char sign = chars[i + j];
+            if (Character.isDigit(sign)) {
+                res.append(sign);
                 hasValue = true;
-            } else if(sign == ',' && commaAllowed){
-                out[0] = Integer.parseInt(res);
-                res = "";
+            } else if (sign == ',' && commaAllowed) {
+                out[0] = Integer.parseInt(res.toString());
+                res.setLength(0); // StringBuilder leeren
                 commaAllowed = false;
                 hasValue = false;
+            } else if (!commaAllowed && sign == ')' && hasValue) {
+                out[1] = Integer.parseInt(res.toString());
+                out[2] = i + j; // Rückgabe des letzten Indexes
+                return out;
+            } else {
+                break;
             }
-            else if (!commaAllowed && sign == ')'&& hasValue){
-                out[1] = Integer.parseInt(res);
-                out[2] = (i+j) - 1; break;}
-            else{out[2] = -1;}
         }
+        out[2] = -1; // Ungültig, falls die Schleife abbricht
         return out;
     }
 }
