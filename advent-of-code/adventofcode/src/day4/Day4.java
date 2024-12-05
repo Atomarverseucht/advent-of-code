@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public final class Day4 {
@@ -13,14 +12,14 @@ public final class Day4 {
         System.out.println("Dec. 4th!");
         try {
             // Daten aus Datei einlesen
-        String fileName = "C:/Users/tombo/private-Projekte/advent-of-code/advent-of-code/adventofcode/src/day4/input.txt";
+            String fileName = "D:/,private Projekte/Code/advent-of-code/advent-of-code/advent-of-code/adventofcode/src/day4/input.txt";
         Path path = Paths.get(fileName);
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
         String[] all = new String[allLines.size()];
         for (int i = 0; i < all.length; i++) {
             all[i] = allLines.get(i);
         }
-        ex1(all);
+        ex2(all);
         System.out.println("Ergebnis: " + result);
         } catch (Exception e) {
            System.out.println(e.toString());
@@ -57,7 +56,7 @@ public final class Day4 {
         }
     }
 
-    public void ex2(String[] input){
+    public static void ex2(String[] input){
         char[][] inputChars = new char[input.length][maxStringArray(input)]; 
         for (int h = 0; h < input.length; h++) {
             for (int k = 0; k < maxStringArray(input); k++) {
@@ -77,9 +76,9 @@ public final class Day4 {
     public static void isCross(int row, int column, char[][] chars, String keyword, int maxRow, int maxColumn){
         char[] keyChars = keyword.toCharArray();
         if(keyChars.length == 3 && row+2 < maxRow && column +2 < maxColumn){
-                if(compareChars(keyChars, chars[row][column], 0) && compareChars(keyChars, chars[row][column+2], 0)){
-                    if(compareChars(keyChars, chars[row+1][column+1], 1)){
-                        if(compareChars(keyChars, chars[row+2][column], 2) && compareChars(keyChars, chars[row+2][column+2], 2))
+                if((keyChars[0] == chars[row][column] && keyChars[2] == chars[row+2][column+2])||(keyChars[2] == chars[row][column] && keyChars[0] == chars[row+2][column+2])){
+                    if(keyChars[1]== chars[row+1][column+1]){
+                        if((keyChars[0] == chars[row][column+2] && keyChars[2] == chars[row+2][column])||(keyChars[2] == chars[row][column+2] && keyChars[0] == chars[row+2][column]))
                         {result++;}
                     }
                     
