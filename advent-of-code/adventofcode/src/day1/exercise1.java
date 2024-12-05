@@ -16,7 +16,7 @@ public class exercise1 {
 
         //Daten Einlesen aus txt
         System.out.println("Dec. 1st!");
-        String fileName = "D:/,private Projekte/Code/advent-of-code/adventofcode/src/day1/inputEx1.txt";
+        String fileName = "advent-of-code/adventofcode/src/day1/inputEx1.txt";
         Path path = Paths.get(fileName);
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (int i = 0; i < 1000; i++) {

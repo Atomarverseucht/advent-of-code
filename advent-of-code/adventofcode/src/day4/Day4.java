@@ -12,7 +12,7 @@ public final class Day4 {
         System.out.println("Dec. 4th!");
         try {
             // Daten aus Datei einlesen
-            String fileName = "D:/,private Projekte/Code/advent-of-code/advent-of-code/advent-of-code/adventofcode/src/day4/input.txt";
+            String fileName = "advent-of-code/adventofcode/src/day4/input.txt";
         Path path = Paths.get(fileName);
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
         String[] all = new String[allLines.size()];

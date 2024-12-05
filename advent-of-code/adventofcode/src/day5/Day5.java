@@ -14,7 +14,7 @@ public final class Day5 {
     public static void main(String[] args){
         try {
             // Daten aus Datei einlesen
-        String fileName = "D:/,private Projekte/Code/advent-of-code/advent-of-code/advent-of-code/adventofcode/src/day5/input.txt";
+        String fileName = "advent-of-code/adventofcode/src/day5/input.txt";
         Path path = Paths.get(fileName);
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
         String[] input = new String[allLines.size()];
@@ -33,7 +33,7 @@ public final class Day5 {
            System.out.println(e.toString());
            e.printStackTrace();
         }
-        
+        System.out.println("Current working directory: " + System.getProperty("user.dir"));
     }
     
     public static void ex1(String[] input){
