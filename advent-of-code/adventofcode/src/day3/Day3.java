@@ -14,7 +14,7 @@ public class Day3 {
         System.out.println("Dec. 3rd!");
 
         // Daten aus Datei einlesen
-        String fileName = "C:/Users/tombo/private-Projekte/advent-of-code/advent-of-code/adventofcode/src/day3/input.txt";
+        String fileName = "advent-of-code/adventofcode/src/day3/input.txt";
         Path path = Paths.get(fileName);
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
