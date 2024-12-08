@@ -13,6 +13,7 @@ public class Day8 {
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
+        System.out.println();
         String fileName = "advent-of-code/adventofcode/src/day8/input.txt";
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -24,45 +25,71 @@ public class Day8 {
         System.out.println(result);
 
        } catch(Exception e){
+            System.out.println();
             e.printStackTrace();
        }
     }
 
     public static void ex1(char[][] input){
-        char[][] antinodes = new char[input.length][input[0].length];
-        List<Antennatype> antennatypes;
+        boolean[][] antinodes = new boolean[input.length][input[0].length];
+        List<Antennatype> antennatypes = new ArrayList<>();
+
         for (int i = 0; i < input.length; i++) {
             for (int j = 0; j < input[0].length; j++) {
                 char value = input[i][j];
                 if(value != '.'){
-                    int index = getIndexOfAntenna(antennatypes, value)
+                    int index = getIndexOfAntenna(antennatypes, value);
                     if(index == -1){
-                        index = antennatypes.size();
-                    } 
-                    antennatypes.get(index).addAntenna(i,j);
+                        Antennatype an = new Antennatype();
+                        an.frequency = value;
+                        an.antenna.add(Position.getPosition(i,j));
+                        antennatypes.add(an);
+                    } else{
+                        antennatypes.get(index).addAntenna(i,j);
+                    }
                 }
             }
         }
         
-        for (int j = 0; j < input.length; j++) {
-           Antennatype antennas = antennatypes.get(j);
-           for (int k = 1; k < antennas.antenna.size(); k++) {
-                Position antenna1 = antennas.antenna.get(j-1);
-                Position antenna2 = antennas.antenna.get(j);
-                Position deltaPosition = new Position();
-                deltaPosition.deltaPosition(antenna1, antenna2);
+        //every antennatype
+        for (Antennatype antennas : antennatypes) {
 
-                
-           } 
+           // every combination of 2 antennas
+           for (int k = 0; k < antennas.antenna.size(); k++) {
+                for (int i = 0; i < antennas.antenna.size(); i++) {
+                    if(i != k){
+                        Position pos = antennas.antenna.get(i);
+                        Position delta = new Position();
+                        delta.deltaPosition(antennas.antenna.get(i), antennas.antenna.get(k));
+
+                        int row = pos.row + delta.row;
+                        int column = pos.column + delta.column;
+                        if(row >= 0 && row < input.length && column >= 0 && column < input[0].length){
+                            antinodes[row][column] = true;
+                        }
+                    }
+                } 
+            }    
         }
+
+        for (boolean[] ant : antinodes) {
+            for (boolean antinode : ant) {
+                if(antinode){
+                    result++;
+                }
+            }
+        }
+        //System.out.println(antennatypes.toString());
     }
+
+
 
     public static int getIndexOfAntenna(List<Antennatype> list, char value){
        for (int i = 0; i < list.size(); i++) {
-        if(list.get(i).index == value){
-            return i;
+            if(list.get(i).frequency == value){
+                return i;
+            }
         }
-       }
         return -1;
     }
 }
