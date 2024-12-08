@@ -12,7 +12,6 @@ public class Day7 {
     public static void main(String[] args) throws Exception {
         
         //Daten Einlesen aus txt
-        System.out.println("\nDec. 2nd!");
         String fileName = "advent-of-code/adventofcode/src/day7/input.txt";
         Path path = Paths.get(fileName);
         List<String> equatation = Files.readAllLines(path, StandardCharsets.UTF_8);
