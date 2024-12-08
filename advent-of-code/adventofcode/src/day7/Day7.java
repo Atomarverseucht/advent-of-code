@@ -87,7 +87,7 @@ public class Day7 {
             case 0: return n1 + n2;
             case 1: return n1 * n2;
             default:
-            case 2: long help = n2 * 10; while(help>10){ n1 *= 10; help /= 10;} return n2 + n1;
+            case 2: return Long.parseLong(n1 + "" + n2);
         }
         
     }
