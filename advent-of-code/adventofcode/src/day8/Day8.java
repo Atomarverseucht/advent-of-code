@@ -13,7 +13,7 @@ public class Day8 {
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
-        System.out.println();
+        //System.out.println();
         String fileName = "advent-of-code/adventofcode/src/day8/input.txt";
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -21,8 +21,11 @@ public class Day8 {
         for (int i = 0; i < field.length; i++) {
             field[i] = line.get(i).toCharArray();
         }
+        ex1(field);
+        System.out.println("\nExercise 1: " + result);
+        result = 0;
         ex2(field);
-        System.out.println(result);
+        System.out.println("Exercise 2: "+result);
 
        } catch(Exception e){
             System.out.println();
@@ -91,7 +94,6 @@ public class Day8 {
             }    
         }
 
-         
         for (boolean[] ant : antinodes) {
             for (boolean antinode : ant) {
                 if(antinode){

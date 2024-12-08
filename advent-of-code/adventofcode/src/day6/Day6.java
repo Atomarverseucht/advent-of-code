@@ -16,7 +16,7 @@ public final class Day6 {
     public static void main(String[] args) throws Exception {
         System.out.println("Nikolaus!");
         // Daten aus Datei einlesen
-        String fileName = "advent-of-code/adventofcode/src/day6/test.txt";
+        String fileName = "advent-of-code/adventofcode/src/day6/input.txt";
         Path path = Paths.get(fileName);
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
         char[][] input = new char[allLines.size()][];
@@ -25,7 +25,6 @@ public final class Day6 {
         }
         ex2(input);
         System.out.println("Ergebnis: " + result);
-        char[] k = new char[10];
 
     }
     
@@ -42,8 +41,10 @@ public final class Day6 {
 
     public static void ex2(char[][] input) {
         int[] startGuardPosition = getGuard(input);
+        
         for (int i = 0; i < input.length; i++) {
             for (int j = 0; j < input[0].length; j++) {
+                int[][] frequency = new int[input.length][input[0].length];
                 guardPosition = startGuardPosition.clone();
                 if(input[i][j] != '#' && (i != guardPosition[0] || j != guardPosition[1])){
                     end = false;
@@ -54,7 +55,7 @@ public final class Day6 {
                     }
                     newInput[i][j] = '#';
                     while (!end && !isRecursive) {
-                        walk(newInput, guardPosition);
+                        walk(newInput, guardPosition, frequency);
                     }
                     if(isRecursive){
                         result++;
@@ -94,7 +95,6 @@ public final class Day6 {
         int row = guardPosition[0];
         int column = guardPosition[1];
         int direction = guardPosition[2];
-        if(input[row][column] == Character.forDigit(direction, 10) ){isRecursive = true; return input;}
         input[row][column] = Character.forDigit(direction, 10); 
         
         switch (direction) {
@@ -105,6 +105,26 @@ public final class Day6 {
             case 1: if (column != input[0].length-1) {if(!changeGuardDirection(input, row, column+1)) {   guardPosition[1] = column+1;}else if(count == true){isRecursive = true;}else{count = true;}} else {end = true;} break;
             case 2: if (row != input.length-1) { if(!changeGuardDirection(input, row+1, column)) {        guardPosition[0] = row+1;}else if(count == true){isRecursive = true;}else{count = true;}} else {end = true;} break;
             case 3: if (column != 0) {  if(!changeGuardDirection(input, row, column-1)) {                 guardPosition[1] = column-1;}else if(count == true){isRecursive = true;}else{count = true;}} else {end = true;} break;
+            default:
+        }
+        return input;
+    }
+    
+    public static char[][] walk(char[][] input, int[] guardPosition, int[][] frequency){
+        int row = guardPosition[0];
+        int column = guardPosition[1];
+        int direction = guardPosition[2];
+        if(Character.isDigit(input[row][column]) ){if(frequency[row][column] >= 5){isRecursive = true; return input;}else{frequency[row][column]++;}}
+        input[row][column] = Character.forDigit(direction, 10); 
+        
+        switch (direction) {
+            case 0: if (row != 0) { 
+                if(!changeGuardDirection(input, row-1, column)) { 
+                    guardPosition[0] = row-1;} 
+                    else{input[row][column] = '4';}} else {end = true;} break;
+            case 1: if (column != input[0].length-1) {if(!changeGuardDirection(input, row, column+1)) {   guardPosition[1] = column+1;}} else {end = true;} break;
+            case 2: if (row != input.length-1) { if(!changeGuardDirection(input, row+1, column)) {        guardPosition[0] = row+1;}} else {end = true;} break;
+            case 3: if (column != 0) {  if(!changeGuardDirection(input, row, column-1)) {                 guardPosition[1] = column-1;}} else {end = true;} break;
             default:
         }
         return input;
