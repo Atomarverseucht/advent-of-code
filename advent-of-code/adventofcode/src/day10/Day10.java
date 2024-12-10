@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class Day10 {
     public static long result = 0;
-    public static List<Position> reachedPosition = new ArrayList<>(); 
+    public static int count = 0; 
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
@@ -28,7 +28,7 @@ public final class Day10 {
         ex1(map);
         System.out.println("\nExercise 1: " + result);
         result = 0;
-        ex2();
+        ex2(map);
         System.out.println("Exercise 2: " + result);
 
        } catch(Exception e){
@@ -38,8 +38,6 @@ public final class Day10 {
     }
 
     public static void ex1(int[][] map){
-        Position maxPos = Position.getPosition(map.length-1, map[0].length-1);
-
         List<Position> groundPos = new ArrayList<>();
         for (int i = 0; i < map.length; i++) {
             int mapRow[] = map[i];
@@ -68,8 +66,32 @@ public final class Day10 {
     }
     
 
-    public static void ex2(){
-        
+    public static void ex2(int[][] map){
+
+        List<Position> groundPos = new ArrayList<>();
+        for (int i = 0; i < map.length; i++) {
+            int mapRow[] = map[i];
+            for (int j = 0; j < mapRow.length; j++) {
+                int mapPos = mapRow[j];
+                if(mapPos == 0){
+                    groundPos.add(Position.getPosition(i, j));
+                }
+            }
+        }
+
+        for (Position gPos : groundPos) {
+            List<Position> reachedPeak = new ArrayList<>();
+            count = 0;
+            if(gPos != null){
+                List<Position> help = walkToPeak(map, gPos);
+                for (Position position : help) {
+                    if(getValueOfPosition(map, position) == 9){
+                        count++;
+                    }
+                }
+            }   
+            result += count; 
+        }
     }
 
 
