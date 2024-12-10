@@ -8,13 +8,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+// Diese Klasse benötigt die Klasse "Position" von Tag 8!
 public final class Day10 {
     public static long result = 0;
     public static int count = 0; 
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
-        //System.out.println();
         String fileName = "advent-of-code/adventofcode/src/day10/input.txt";
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -25,6 +25,8 @@ public final class Day10 {
                 map[i][j] = Character.getNumericValue(helpChar[j]);
             }
         }
+
+        //Aufgaben ausführen
         ex1(map);
         System.out.println("\nExercise 1: " + result);
         result = 0;
@@ -38,6 +40,8 @@ public final class Day10 {
     }
 
     public static void ex1(int[][] map){
+
+        //Bodenpunkte finden
         List<Position> groundPos = new ArrayList<>();
         for (int i = 0; i < map.length; i++) {
             int mapRow[] = map[i];
@@ -49,7 +53,7 @@ public final class Day10 {
             }
         }
 
-       
+       //erreichbare Spitzen berechnen
         for (Position gPos : groundPos) {
             List<Position> reachedPeak = new ArrayList<>();
             if(gPos != null){
@@ -80,7 +84,6 @@ public final class Day10 {
         }
 
         for (Position gPos : groundPos) {
-            List<Position> reachedPeak = new ArrayList<>();
             count = 0;
             if(gPos != null){
                 List<Position> help = walkToPeak(map, gPos);
@@ -94,7 +97,7 @@ public final class Day10 {
         }
     }
 
-
+    //* läuft rekursiv von Bodenpunkt zu allen Spitzen und gibt jede Position zurück, an der es jemals war, in entsprechender Häufigkeit*/
     public static List<Position> walkToPeak(int[][] map, Position p){
         Position maxPos = Position.getPosition(map.length-1, map[0].length-1);  
         List<Position> out = new ArrayList<>();
@@ -102,18 +105,19 @@ public final class Day10 {
         Position next[] = p.getNearPositions(maxPos);
         next = getPassablePositions(map, next, p);
 
-        if(getValueOfPosition(map, p) == 9){ out.add(p); return out;}
+        if(getValueOfPosition(map, p) == 9){ out.add(p); return out;} // Break-Condition
         for (Position position : next) {
             if(position != null){
                 List<Position> posit = walkToPeak(map, position);
-            for (Position position2 : posit) {
-                out.add(position2);
-            }
-            }
-            
+                for (Position position2 : posit) {
+                    out.add(position2);
+                }
+            } 
         }
         return out;
     }
+
+    //überprüfe welche der nächsten Positionen logisch überhaupt möglich sind (1 Schritt nach oben)
     public static Position[] getPassablePositions(int[][] map, Position[] nearPosition, Position pos){
         int p = getValueOfPosition(map, pos);
         List<Position> out = new ArrayList<>();

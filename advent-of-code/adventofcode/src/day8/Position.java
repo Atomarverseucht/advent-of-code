@@ -2,6 +2,7 @@ package day8;
 
 import java.util.ArrayList;
 
+// important help class for Day8 and Day 10
 public final class Position {
     public int row; public int column;
 
@@ -23,10 +24,12 @@ public final class Position {
 
     public Position[] getNearPositions(Position maxPos){
         ArrayList<Position> out = new ArrayList<>();
+
         if(row != 0){out.add(getPosition(row-1, column));}
         if(column != 0){out.add(getPosition(row, column-1));}
         if(row != maxPos.row){out.add(getPosition(row+1, column));}
         if(column != maxPos.column){out.add(getPosition(row, column+1));}
+        
         return out.toArray(new Position[0]);
     }
 
