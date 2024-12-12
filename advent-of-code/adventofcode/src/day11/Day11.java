@@ -11,11 +11,11 @@ import java.util.List;
 public class Day11 {
     public static long result = 0;
     public static int count = 0; 
-    public static final int blinkCount = 6;
+    public static final int blinkCount = 25;
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
-        String fileName = "advent-of-code/adventofcode/src/day11/test.txt";
+        String fileName = "advent-of-code/adventofcode/src/day11/input.txt";
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
         String[] help = line.get(0).split(" ");
@@ -43,37 +43,41 @@ public class Day11 {
         for (int i = 0; i < nums.length; i++) {
             numbers.add(Integer.toUnsignedLong(nums[i]));
         }
-
+        
         for (int i = 0; i < blinkCount; i++) {
             for (int j = 0; j < 2 * numbers.size(); j++) {
                 long stone = numbers.get(j);
 
-                if(stone == Long.valueOf(0)){
+                if(stone == 0){
                     numbers.set(j, Long.valueOf(1));
-                }else if((int)(stone /10) % 2 == 1){
-                    char[] num = Long.toString(stone).toCharArray();
-                    int length = num.length;
-                    String stone1 = "";
-                    String stone2 = "";
-                    for (int k = 0; k < length; k++) {
-                        char point = num[k];
-                        if(k < length / 2){
-                            stone1 += point;
-                        } else{
-                            stone2 += point;
+                } else{ 
+                    int length = (int) Math.log10(stone) + 1;
+                    if(length % 2 == 0) {
+                        long stone1 = 0;
+                        long stone2 = 0;
+
+                        for (int k = 0; k < length; k++) {
+                            char point = '\n';
+                            if(k < length / 2){
+                                stone1 *= 10;
+                                stone1 += point;
+                            } else{
+                                stone2 *= 10;
+                                stone2 += point;
+                            }
                         }
-                    }
-                    numbers.set(j, Long.parseLong(stone2));
-                    numbers.add(j, Long.parseLong(stone1));
+                    numbers.set(j, stone2);
+                    numbers.add(stone1);
                     j++;
-                } else {
-                    numbers.set(j, numbers.get(j)*2024);
+                    } else {
+                        numbers.set(j, numbers.get(j) * 2024);
+                    }
                 }
                 if(j >= numbers.size()-1){
                     break;
                 }
             }
-            System.out.println(numbers);
         }
+        result = numbers.size();
     }
 }

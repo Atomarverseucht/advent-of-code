@@ -2,7 +2,7 @@ package day8;
 
 import java.util.ArrayList;
 
-// important help class for Day8 and Day 10
+// important help class for Day 8, 10, 12
 public final class Position {
     public int row; public int column;
 
