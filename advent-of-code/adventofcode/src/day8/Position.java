@@ -41,4 +41,14 @@ public final class Position {
         }
         return false;
     }
+
+    public static Position getStartPosition(ArrayList<Position> positions, Position maxPosition){
+        Position out = Position.getPosition(maxPosition.row, maxPosition.column);
+        for (Position pos : positions) {
+            if(pos.row < out.row || (pos.row == out.row && pos.column < out.column)){
+                out = pos;
+            }
+        }
+        return out;
+    }
 }
