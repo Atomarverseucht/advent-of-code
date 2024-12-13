@@ -23,7 +23,7 @@ public final class Day12{
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
         char[][] field = new char[line.size()][line.get(0).length()];
-        for (int i = 0; i < field.length; i++) {
+        for (int i = 0; i < line.size(); i++) {
             field[i] = line.get(i).toCharArray();
         }
 
@@ -104,7 +104,7 @@ public final class Day12{
         
         // Wertberechnung
         for (Region region : regions) {
-            borders = 1;
+            borders = 0;
             posLog.clear();
             for (int[] lrow : log) {
                 for (int logs : lrow) {
