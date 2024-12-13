@@ -13,7 +13,7 @@ public class Day13 {
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
-        //System.out.println();
+        long startTime = System.currentTimeMillis();
         String fileName = "advent-of-code/adventofcode/src/day13/input.txt";
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -36,6 +36,9 @@ public class Day13 {
         result = 0;
         ex2(field);
         System.out.println("Exercise 2: " + result);
+        long endTime   = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("Runtime: " + totalTime +"ms");
 
        } catch(Exception e){
             System.out.println(e.toString());
@@ -49,7 +52,6 @@ public class Day13 {
             int a2 = (val[1]*val[4] - val[5]*val[0]) / (val[1]*val[2] - val[3]*val[0]);
             int a1 = (val[5] - a2*val[3]) / val[1];
             if((a1*val[0]+a2*val[2]) == val[4] && (a1*val[1] + a2*val[3]) == val[5]){
-                System.out.println("B1: " + a1 + ", B2: " + a2);
                 result += 3*a1 + 1*a2;
             }
         }
@@ -61,11 +63,9 @@ public class Day13 {
             long v = 10000000000000L;
             val[4] += v;
             val[5] += v;
-            System.out.println(v);
             long a2 = (val[1]*val[4] - val[5]*val[0]) / (val[1]*val[2] - val[3]*val[0]);
             long a1 = (val[5] - a2*val[3]) / val[1];
             if((a1*val[0]+a2*val[2]) == val[4] && (a1*val[1] + a2*val[3]) == val[5]){
-                System.out.println("B1: " + a1 + ", B2: " + a2);
                 result += 3*a1 + 1*a2;
             }
         }
