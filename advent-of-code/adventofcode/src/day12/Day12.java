@@ -1,23 +1,25 @@
 package day12;
 
+import day8.Position;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import day8.Position;
 
 public final class Day12{
     public static int result = 0;
     public static List<Position> posLog = new ArrayList<>();
+    public static int borders = 1;
+    public static List<Error> err = new ArrayList<>();
+    public static int[][] log = new int[140][140];
 
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
         //System.out.println();
-        String fileName = "advent-of-code/adventofcode/src/day12/input.txt";
+        String fileName = "advent-of-code/adventofcode/src/day12/test.txt";
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
         char[][] field = new char[line.size()][line.get(0).length()];
@@ -32,7 +34,7 @@ public final class Day12{
         System.out.println("Exercise 2: " + result);
 
        } catch(Exception e){
-            System.out.println();
+            System.out.println(e.toString());
             e.printStackTrace();
        }
     }
@@ -50,7 +52,7 @@ public final class Day12{
                     walk(regions.getLast(), p, field, maxPos);
                     regions.getLast().plots.removeFirst();
                 }
-            } System.out.println(regions.toString());
+            }
         }
 
         // Wertberechnung
@@ -99,17 +101,54 @@ public final class Day12{
             }
         }
 
+        
         // Wertberechnung
         for (Region region : regions) {
-            int scope = 0;
+            borders = 0;
             posLog.clear();
+            for (int[] lrow : log) {
+                for (int logs : lrow) {
+                    logs = 0;
+                }
+            }
             Position startPos = Position.getStartPosition(region.plots, maxPos);
-            
-            result += scope * region.plots.size();
+            log[startPos.row] [startPos.column] =1 ;
+            Position[] neighbours = startPos.getNearPos(maxPos);
+            Position[] positions = region.plots.toArray(new Position[0]);
+            System.out.println(startPos.toString()); 
+            if(Position.existPosition(positions, neighbours[1])){
+                borders++;
+                calculateBorders(positions, startPos, neighbours[1], maxPos, 3);
+            } else if(Position.existPosition(positions, neighbours[2])){
+                calculateBorders(positions, startPos,neighbours[2], maxPos, 0);
+            } else{
+                borders++;
+                calculateBorders(positions, startPos, startPos, maxPos, 1);
+            }
+
+            result += borders * region.plots.size();
         } 
     }
 
-    public int calculateBorders(Position[] positions, Position startPosition, Position pos, Position maxPos, Region reg, String direction){
-        if(Position.existPosition(positions, maxPos)){ } return -1;
+    public static void calculateBorders(Position[] positions, Position startPosition, Position pos, Position maxPos, int direction){
+        if(pos.isOutOfBound(maxPos) || !Position.existPosition(positions, pos) || (Position.comparePosition(pos, startPosition) && direction == 0) || direction < 0 || direction > 3) { return;} 
+        //if(log[pos.row][pos.column] >= 4){return;} log[pos.row][pos.column]++;
+        //System.out.print(pos.toString());
+        Position[] neighbours = pos.getNearPos(maxPos);
+        neighbours = Position.deleteOutofBounds(neighbours, maxPos);
+        int i = 2 * direction +1;
+        int i2 = direction == 3?0:i+1;
+        if(Position.existPosition(positions, neighbours[i])){
+            direction = (direction==0)? 3 : direction - 1;
+            borders++;
+            calculateBorders(positions, startPosition, neighbours[i], maxPos, direction);
+        } else if(Position.existPosition(positions, neighbours[i2])){
+            calculateBorders(positions, startPosition, neighbours[i2], maxPos, direction);
+        } else{
+            borders++;
+            direction = (direction==3)? 0 : direction + 1;
+            calculateBorders(positions, startPosition, pos, maxPos, direction);
+        }
     }
+    
 }

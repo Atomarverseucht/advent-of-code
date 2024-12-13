@@ -18,6 +18,7 @@ public final class Position {
         return p;
     }
 
+    @Override
     public String toString(){
         return Integer.toString(row) + "|" + Integer.toString(column);
     }
@@ -33,7 +34,39 @@ public final class Position {
         return out.toArray(new Position[0]);
     }
 
+    public Position[] getNearPos(Position maxPos){
+        
+        Position[] out = new Position[8];
+
+        if(column != 0){
+            out[0] = getPosition(row, column - 1);
+            if(row != maxPos.row){
+                out[1] = getPosition(row, column - 1);
+            }
+        }
+        if(row != maxPos.row){
+            out[2] = getPosition(row+1, column);
+            if(column != maxPos.column){
+                out[3] = getPosition(row + 1, column + 1);
+            }
+        }
+        if(column != maxPos.column){
+            out[4] = getPosition(row, column + 1);
+            if(row != 0){
+                out[5] = getPosition(row-1, column+1);
+            }
+        }
+        if(row != 0){
+            out[6] = getPosition(row-1, column);
+            if(column != 0){
+                out[7] = getPosition(-1, column-1);
+            }
+        }
+        return out;
+    }
+
     public static boolean existPosition(Position[] positions, Position value){
+        if(value == null){ return false;}
         for (Position position : positions) {
             if(value.row == position.row && value.column == position.column){
                 return true;
@@ -50,5 +83,28 @@ public final class Position {
             }
         }
         return out;
+    }
+
+    public static boolean comparePosition(Position p1, Position p2){
+        if(p1.row == p2.row && p1.column == p2.column){
+            return true;
+        } return false;
+    }
+
+    public static Position[] deleteOutofBounds(Position[] pos, Position maxP){
+        for (Position p : pos) {
+            if(p != null && (p.row < 0 || p.row > maxP.row || p.column < 0 || p.column > maxP.column)){
+                p = null;
+            }
+        }
+        return pos;
+    }
+
+    public boolean isOutOfBound(Position maxP){
+        Position p = this;
+        if(p == null || p.row < 0 || p.row > maxP.row || p.column < 0 || p.column > maxP.column){
+            return true;
+        }
+        return false;
     }
 }
