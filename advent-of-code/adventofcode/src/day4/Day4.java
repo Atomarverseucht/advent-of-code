@@ -8,7 +8,7 @@ import java.util.List;
 
 public final class Day4 {
     static int result = 0;
-    static void main(String[] args){
+    public static void main(String[] args){
         System.out.println("Dec. 4th!");
         try {
             // Daten aus Datei einlesen
