@@ -4,11 +4,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 public class Day13 {
 
-    public static int result = 0;
+    public static long result = 0;
     public static void main(String[] args){
        try{
         //Daten Einlesen aus txt
@@ -33,7 +34,7 @@ public class Day13 {
         ex1(field);
         System.out.println("\nExercise 1: " + result);
         result = 0;
-        //ex2(field);
+        ex2(field);
         System.out.println("Exercise 2: " + result);
 
        } catch(Exception e){
@@ -53,5 +54,20 @@ public class Day13 {
             }
         }
     }
-
+    
+    public static void ex2(int[][] values){
+        for (int i = 0; i < values.length; i++) {
+            long[] val = Arrays.stream(values[i]).asLongStream().toArray();
+            long v = 10000000000000L;
+            val[4] += v;
+            val[5] += v;
+            System.out.println(v);
+            long a2 = (val[1]*val[4] - val[5]*val[0]) / (val[1]*val[2] - val[3]*val[0]);
+            long a1 = (val[5] - a2*val[3]) / val[1];
+            if((a1*val[0]+a2*val[2]) == val[4] && (a1*val[1] + a2*val[3]) == val[5]){
+                System.out.println("B1: " + a1 + ", B2: " + a2);
+                result += 3*a1 + 1*a2;
+            }
+        }
+    }
 }
