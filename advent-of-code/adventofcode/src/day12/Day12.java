@@ -104,7 +104,7 @@ public final class Day12{
         
         // Wertberechnung
         for (Region region : regions) {
-            borders = 0;
+            borders = 1;
             posLog.clear();
             for (int[] lrow : log) {
                 for (int logs : lrow) {
@@ -115,7 +115,8 @@ public final class Day12{
             log[startPos.row] [startPos.column] =1 ;
             Position[] neighbours = startPos.getNearPos(maxPos);
             Position[] positions = region.plots.toArray(new Position[0]);
-            System.out.println(startPos.toString()); 
+
+            
             if(Position.existPosition(positions, neighbours[1])){
                 borders++;
                 calculateBorders(positions, startPos, neighbours[1], maxPos, 3);
@@ -125,18 +126,18 @@ public final class Day12{
                 borders++;
                 calculateBorders(positions, startPos, startPos, maxPos, 1);
             }
-
+            System.out.println(borders); 
             result += borders * region.plots.size();
         } 
     }
 
     public static void calculateBorders(Position[] positions, Position startPosition, Position pos, Position maxPos, int direction){
-        if(pos.isOutOfBound(maxPos) || !Position.existPosition(positions, pos) || (Position.comparePosition(pos, startPosition) && direction == 0) || direction < 0 || direction > 3) { return;} 
+        if(Position.comparePosition(pos, startPosition) && direction == 0) { return;} 
         //if(log[pos.row][pos.column] >= 4){return;} log[pos.row][pos.column]++;
         //System.out.print(pos.toString());
         Position[] neighbours = pos.getNearPos(maxPos);
         neighbours = Position.deleteOutofBounds(neighbours, maxPos);
-        int i = 2 * direction +1;
+        int i = 2 * direction +1; // i ist das Feld das angesprochen wird
         int i2 = direction == 3?0:i+1;
         if(Position.existPosition(positions, neighbours[i])){
             direction = (direction==0)? 3 : direction - 1;

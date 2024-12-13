@@ -41,7 +41,7 @@ public final class Position {
         if(column != 0){
             out[0] = getPosition(row, column - 1);
             if(row != maxPos.row){
-                out[1] = getPosition(row, column - 1);
+                out[1] = getPosition(row+1, column - 1);
             }
         }
         if(row != maxPos.row){
@@ -59,7 +59,7 @@ public final class Position {
         if(row != 0){
             out[6] = getPosition(row-1, column);
             if(column != 0){
-                out[7] = getPosition(-1, column-1);
+                out[7] = getPosition(row-1, column-1);
             }
         }
         return out;
