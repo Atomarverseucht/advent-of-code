@@ -2,9 +2,10 @@ package day8;
 
 import java.util.ArrayList;
 
-// important help class for Day 8, 10, 12
+// important help class for Day 8, 10, 12 and 14
 public final class Position {
     public int row; public int column;
+
 
     public void deltaPosition(Position p1, Position p2){
         this.row = p1.row - p2.row;
@@ -35,7 +36,6 @@ public final class Position {
     }
 
     public Position[] getNearPos(Position maxPos){
-        
         Position[] out = new Position[8];
 
         if(column != 0){
