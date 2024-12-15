@@ -2,7 +2,7 @@ package day8;
 
 import java.util.ArrayList;
 
-// important help class for Day 8, 10, 12 and 14
+// important help class for Day 8, 10, 12, 14, 15
 public final class Position {
     public int row; public int column;
 
@@ -66,6 +66,16 @@ public final class Position {
     }
 
     public static boolean existPosition(Position[] positions, Position value){
+        if(value == null){ return false;}
+        for (Position position : positions) {
+            if(value.row == position.row && value.column == position.column){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean existPosition(ArrayList<Position> positions, Position value){
         if(value == null){ return false;}
         for (Position position : positions) {
             if(value.row == position.row && value.column == position.column){

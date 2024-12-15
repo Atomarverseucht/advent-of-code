@@ -48,22 +48,23 @@ public class Day14 {
     public static void ex1(int[][] input){
         Position maxPos = Position.getPosition(102, 100);
         ArrayList<Robot> robots = new ArrayList<>();
+        
         for (int i = 0; i < input.length; i++) {
             int[] in = input[i];
             robots.add(new Robot(Position.getPosition(in[1], in[0]), Position.getPosition(in[3], in[2])));
-        }
-
-        for (int i = 0; i < 101; i++) {
-            for (Robot robot : robots) {
-                robot.moveRobot(maxPos);  
-            }
-        }
-        for (Robot robot2 : robots) {
+        }for (Robot robot2 : robots) {
             System.out.println(robot2.position.toString());
         }
+System.out.println(robots.size());
+        for (int i = 0; i < 101; i++) {
+            for (Robot robot : robots) {
+                robot.moveRobot(maxPos);
+            }
+        }
+        
 
         int[] count = Robot.countRobotsInQuadrats(robots, maxPos);
         System.out.println(Arrays.toString(count));
-        result = count[0] * count[1] * count[2] *count[3];
+        result = count[0] * count[1] * count[2] * count[3];
     }
 }

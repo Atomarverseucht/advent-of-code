@@ -7,6 +7,8 @@ public class Robot {
     Position position;
     Position velocity;
 
+    Robot(){ }
+    
     Robot(Position position, Position velocity){
         this.position = position;
         this.velocity = velocity;
@@ -17,8 +19,8 @@ public class Robot {
         row = position.row + velocity.row;
         column = position.column + velocity.column;
 
-        if(row < 0){ row = maxPos.row +1 - row;}
-        if(column < 0){column = maxPos.column +1 - column;}
+        if(row < 0){ row = maxPos.row +1 + row;}
+        if(column < 0){column = maxPos.column +1 + column;}
         if(row > maxPos.row){row -= maxPos.row +1;}
         if(column > maxPos.column){column -= maxPos.column +1;}
 
