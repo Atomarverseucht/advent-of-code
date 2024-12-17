@@ -101,8 +101,8 @@ public class Day15 {
         boolean f = false;
         switch(command){
             case '^': direction = 0; break;
-            case '<': direction = 2; break;
             case 'v': direction = 1; break;
+            case '<': direction = 2; break;
             case '>': direction = 3; break;
         }
         f = check(row, column, field, direction); 
