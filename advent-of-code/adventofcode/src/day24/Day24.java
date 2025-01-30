@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Day24 {
-    public static final int devide = 90;
+    public static final int devide = 10;
     public static int result = 0;
     static void main(String[] args){
         try{
@@ -17,7 +17,7 @@ public final class Day24 {
         List<Operation> op = new ArrayList<>();
         //Daten Einlesen aus txt
         long startTime = System.currentTimeMillis();
-        String fileName = "advent-of-code/adventofcode/src/day24/input.txt";
+        String fileName = "advent-of-code/adventofcode/src/day24/test.txt";
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (int i = 0; i < line.size(); i++) {

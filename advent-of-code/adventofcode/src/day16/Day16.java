@@ -32,7 +32,7 @@ public class Day16{
         ex1(field);
         System.out.println("\nExercise 1: " + result);
         result = 0;
-        //ex2(field);
+        test();
         System.out.println("Exercise 2: " + result);
 
         long endTime   = System.currentTimeMillis();
@@ -81,4 +81,5 @@ public class Day16{
         int[] out = {row, column};
         return out;
     }
+
 }
