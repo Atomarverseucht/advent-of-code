@@ -9,6 +9,8 @@ public class App {
         System.out.println("Which day would you like to calculate? Press '42' if you want to calculate everything ");
         while(INPUT.hasNext()){
             try{
+                String userDirectoryPath = System.getProperty("user.dir");
+                System.out.println("Current Directory = \"" + userDirectoryPath + "\"" );
             int input = inputInt();
             final long startTime = System.currentTimeMillis();
             startDay(input);

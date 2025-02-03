@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Day24 {
-    public static final int devide = 10;
+    public static final int devide = 90;
     public static int result = 0;
     static void main(String[] args){
         try{
@@ -17,7 +17,8 @@ public final class Day24 {
         List<Operation> op = new ArrayList<>();
         //Daten Einlesen aus txt
         long startTime = System.currentTimeMillis();
-        String fileName = "advent-of-code/adventofcode/src/day24/test.txt";
+        System.out.println(System.getProperty("user.dir"));
+        String fileName = "advent-of-code/advent-of-code/adventofcode/src/day24/input.txt"; 
         Path path = Paths.get(fileName);
         List<String> line = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (int i = 0; i < line.size(); i++) {
@@ -26,7 +27,7 @@ public final class Day24 {
                 String[] st = s.split(": ");
                 Variable v = d.new Variable();
                 v.name = st[0];
-                v.value = Boolean.getBoolean(st[1]);
+                v.value = (st[1].contains("1"));
                 v.isCalculated = true;
                 vars.add(v);
             } else if (i>devide){
@@ -58,33 +59,33 @@ public final class Day24 {
     }
 
     public static void ex1(List<Variable> varList, List<Operation> op){
-        boolean[] check = new boolean[op.size()];
-        everything:
+        
+        outside:
         while (!op.isEmpty()) {
+            boolean check = false;
             for (int i = 0; i < op.size(); i++) {
-                check[i] = true;
                 Operation operate = op.get(i);
                 Variable v1 = searchVariable(operate.v1, varList);
                 Variable v2 = searchVariable(operate.v2, varList);
                 if(v1.isCalculated && v2.isCalculated){ 
                     boolean out = false;
                     switch(operate.operator){
-                        case "OR": out = v1.value | v2.value;
-                        case "AND": out = v1.value && v2.value;
-                        case "XOR": out = v1.value ^ v2.value;
+                        case "OR": out = v1.value || v2.value; break;
+                        case "AND": out = v1.value && v2.value; break;
+                        case "XOR": out = v1.value ^ v2.value; break;
                     }
                     Variable outv = searchVariable(operate.out, varList);
                     outv.value = out;
                     outv.isCalculated = true;
                     op.remove(i);
-                    check[i] = false;
+                    check = true;
                 }
-            } 
-            for (int i = 0; i < check.length; i++) {
-                if(!check[i]) break;
-                if(i == check.length -1) break everything;
+            }
+            if(!check){
+                break outside;
             }
         }
+        
         int count = 0;
         long val = 1;
         while (true) { 
@@ -106,14 +107,19 @@ public final class Day24 {
         return null;
     }
 
-    public class Variable{
+    public final class Variable{
         boolean value;
         boolean isCalculated = false;
         String name;
         public Variable(){}
+
+        @Override
+        public String toString(){
+            return name + ": " + Boolean.toString(value) + "\n";
+        }
     }
 
-    public class Operation{
+    public final class Operation{
         String v1, v2, out;
         String operator;
     }
